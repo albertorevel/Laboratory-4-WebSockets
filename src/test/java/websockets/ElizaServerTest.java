@@ -1,6 +1,8 @@
 package websockets;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -74,7 +76,7 @@ public class ElizaServerTest {
 			@Override
 			public void onOpen(Session session, EndpointConfig config) {
 				// We send the test message
-				session.getAsyncRemote().sendText("I wrote this test because I want to pass Lab4 work");
+				session.getAsyncRemote().sendText("Yes, I will learn this subject");
 
 				session.addMessageHandler(new MessageHandler.Whole<String>() {
 
@@ -92,7 +94,8 @@ public class ElizaServerTest {
 		// We've received 5 messages
 		assertEquals(5, list.size());
 		// The response is the expected one
-		assertEquals("Is that the real reason?", list.get(3));
+		assertTrue("Why do you think so?".equals(list.get(3)) ||
+				"You seem quite positive.".equals(list.get(3)));
 	}
 
 	@After
