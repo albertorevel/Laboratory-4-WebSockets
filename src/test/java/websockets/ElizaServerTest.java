@@ -62,9 +62,10 @@ public class ElizaServerTest {
 	}
 
 	@Test(timeout = 1000)
-	@Ignore
 	public void onChat() throws DeploymentException, IOException, URISyntaxException, InterruptedException {
-		// COMPLETE
+		// We set the countdown for this test
+		CountDownLatch latch = new CountDownLatch(5);
+
 		List<String> list = new ArrayList<>();
 		ClientEndpointConfig configuration = ClientEndpointConfig.Builder.create().build();
 		ClientManager client = ClientManager.createClient();
@@ -72,23 +73,26 @@ public class ElizaServerTest {
 
 			@Override
 			public void onOpen(Session session, EndpointConfig config) {
-
-				// COMPLETE
+				// We send the test message
+				session.getAsyncRemote().sendText("I wrote this test because I want to pass Lab4 work");
 
 				session.addMessageHandler(new MessageHandler.Whole<String>() {
 
 					@Override
 					public void onMessage(String message) {
 						list.add(message);
-						// COMPLETE
+						latch.countDown();
 					}
 				});
 			}
 
 		}, configuration, new URI("ws://localhost:8025/websockets/eliza"));
-		// COMPLETE
-		// COMPLETE
-		// COMPLETE
+		// We wait the expected messages
+		latch.await();
+		// We've received 5 messages
+		assertEquals(5, list.size());
+		// The response is the expected one
+		assertEquals("Is that the real reason?", list.get(3));
 	}
 
 	@After
