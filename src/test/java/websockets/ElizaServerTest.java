@@ -93,7 +93,7 @@ public class ElizaServerTest {
 		latch.await();
 		// We've received 5 messages
 		assertEquals(5, list.size());
-		// The response is the expected one
+		// The response is one of two expected
 		assertTrue("Why do you think so?".equals(list.get(3)) ||
 				"You seem quite positive.".equals(list.get(3)));
 	}
